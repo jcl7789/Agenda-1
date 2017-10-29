@@ -2,12 +2,37 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal|fill_vertical"
+    android:layout_margin="30dip"
+    android:fadingEdge="vertical"
+    >
 
-    <ListView
-        android:id="@+id/listPhone"
-        android:layout_width="fill_parent"
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/welcome"
+    android:textSize="50dip"
+        android:paddingBottom="30dip"/>
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:text="@string/agregar"
+        android:textSize="20dip"
+        android:padding="20dip"
+        android:fadingEdge="horizontal"
+        android:onClick="lanzarAgregarContacto"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/listar"
+        android:fadingEdge="horizontal"
+        android:padding="20dip"
+        android:textSize="20dip"
+        android:onClick="lanzarListarContactos"/>
+
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.zeus.agenda;
+package com.zeus.agenda.Utils;
 
 import android.graphics.Bitmap;
 
@@ -6,20 +6,22 @@ import android.graphics.Bitmap;
  * Created by Juan on 29/10/2017.
  */
 
-public class Agenda {
+public class Contacto {
     private Bitmap bitmap;
     private String nombre;
     private String telefono;
     private String mail;
+    private String id;
 
-    public Agenda(Bitmap bitmap, String nombre, String telefono, String mail) {
+    public Contacto(Bitmap bitmap, String nombre, String telefono, String mail, String id) {
         this.bitmap = bitmap;
         this.nombre = nombre;
         this.telefono = telefono;
         this.mail = mail;
+        this.id = id;
     }
 
-    public Agenda() {
+    public Contacto() {
     }
 
     public Bitmap getBitmap() {
@@ -52,5 +54,13 @@ public class Agenda {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

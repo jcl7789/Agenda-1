@@ -1,13 +1,14 @@
-package com.zeus.agenda;
+package com.zeus.agenda.Utils;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.zeus.agenda.R;
 
 import java.util.ArrayList;
 
@@ -16,15 +17,15 @@ import java.util.ArrayList;
  */
 
 public class AgendaAdapter extends BaseAdapter {
-    private ArrayList<Agenda> al;
+    private ArrayList<Contacto> al;
     private Context context;
 
-    public AgendaAdapter(ArrayList<Agenda> al, Context context) {
+    public AgendaAdapter(ArrayList<Contacto> al, Context context) {
         this.al = al;
         this.context = context;
     }
 
-    public AgendaAdapter(Context context, ArrayList<Agenda> al) {
+    public AgendaAdapter(Context context, ArrayList<Contacto> al) {
         this.al = al;
         this.context = context;
     }
@@ -47,7 +48,7 @@ public class AgendaAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // get selected entry
-        Agenda entry = al.get(position);
+        Contacto entry = al.get(position);
 
         // inflating list view layout if null
         if(convertView == null) {
