@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zeus.agenda.R;
+import com.zeus.agenda.Utils.Contacto;
 
 import java.util.ArrayList;
 
@@ -83,7 +84,7 @@ public class ActivityVer extends AppCompatActivity {
 
     public void borrarElContacto(View v) {
         ContentResolver cr = getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, ContactsContract.Contacts._ID +" = ?", new String[] { id }, null);
         while (cur.moveToNext()) {
             try {
                 String lookupKey = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
