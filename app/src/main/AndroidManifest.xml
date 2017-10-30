@@ -23,7 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ActivityAgregar" android:label="Agregar contacto"/>
-        <!-- activity android:name=".activities.ActivityModificar" android:label="Modificar contacto" /-->
+        <activity
+            android:name=".Activities.ActivityModificar"
+            android:label="Modificar contacto" />
         <activity android:name=".Activities.ActivityListar" android:label="Lista de contactos" />
         <activity android:name=".Activities.ActivityVer" android:label="Detalle" />
     </application>

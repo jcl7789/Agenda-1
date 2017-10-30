@@ -12,10 +12,12 @@ public class Contacto {
     private String telefono;
     private String mail;
     private String id;
+    private String apellido;
 
-    public Contacto(Bitmap bitmap, String nombre, String telefono, String mail, String id) {
+    public Contacto(Bitmap bitmap, String nombre, String apellido, String telefono, String mail, String id) {
         this.bitmap = bitmap;
         this.nombre = nombre;
+        this.apellido = apellido;
         this.telefono = telefono;
         this.mail = mail;
         this.id = id;
@@ -62,5 +64,13 @@ public class Contacto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 }

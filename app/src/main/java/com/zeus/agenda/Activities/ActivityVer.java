@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -23,9 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zeus.agenda.R;
-import com.zeus.agenda.Utils.Contacto;
-
-import java.util.ArrayList;
 
 
 /**
@@ -34,12 +28,14 @@ import java.util.ArrayList;
 
 public class ActivityVer extends AppCompatActivity {
     private TextView tvTextoNom;
+    private TextView tvTextoApe;
     private ImageView imgAvatar;
     private TextView tvTextoMail;
     private TextView tvTextoTel;
 
     private String id;
     private String nombre;
+    private String apellido;
     private Bitmap imagen;
     private String mail;
     private String telefono;
@@ -55,19 +51,23 @@ public class ActivityVer extends AppCompatActivity {
 
         this.id = bundle.getString("id");
         this.nombre = bundle.getString("nombre");
+        this.apellido = bundle.getString("apellido");
         this.imagen = (Bitmap) bundle.get("imagen");
         this.mail = bundle.getString("mail");
         this.telefono = bundle.getString("telefono");
 
-        tvTextoNom = (TextView) findViewById(R.id.tvNombre);
-        imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
-        tvTextoMail = (TextView) findViewById(R.id.tvMail);
-        tvTextoTel = (TextView) findViewById(R.id.tvTelefono);
+        tvTextoNom = findViewById(R.id.tvNombre);
+        imgAvatar = findViewById(R.id.imgAvatar);
+        tvTextoMail = findViewById(R.id.tvMail);
+        tvTextoTel = findViewById(R.id.tvTelefono);
+        tvTextoApe = findViewById(R.id.tvApellido);
 
         tvTextoNom.setText(this.nombre);
+        tvTextoApe.setText(this.apellido);
         imgAvatar.setImageBitmap(this.imagen);
         tvTextoMail.setText(this.mail);
         tvTextoTel.setText(this.telefono);
+
 
     }
 
@@ -75,6 +75,7 @@ public class ActivityVer extends AppCompatActivity {
         Intent t = new Intent(this, ActivityModificar.class);
         t.putExtra("id", this.id);
         t.putExtra("nombre", this.nombre);
+        t.putExtra("apellido", this.apellido);
         t.putExtra("imagen", this.imagen);
         t.putExtra("mail", this.mail);
         t.putExtra("telefono", this.telefono);

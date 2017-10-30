@@ -20,11 +20,6 @@ public class AgendaAdapter extends BaseAdapter {
     private ArrayList<Contacto> al;
     private Context context;
 
-    public AgendaAdapter(ArrayList<Contacto> al, Context context) {
-        this.al = al;
-        this.context = context;
-    }
-
     public AgendaAdapter(Context context, ArrayList<Contacto> al) {
         this.al = al;
         this.context = context;
@@ -57,19 +52,19 @@ public class AgendaAdapter extends BaseAdapter {
         }
 
         // set avatar
-        ImageView ivAvatar = (ImageView)convertView.findViewById(R.id.imgAvatar);
+        ImageView ivAvatar = convertView.findViewById(R.id.imgAvatar);
         ivAvatar.setImageBitmap(entry.getBitmap());
 
         // set name
-        TextView tvName = (TextView)convertView.findViewById(R.id.tvName);
-        tvName.setText(entry.getNombre());
+        TextView tvName = convertView.findViewById(R.id.tvName);
+        tvName.setText(entry.getNombre() + " " + entry.getApellido());
 
         // set phone
-        TextView tvPhone = (TextView)convertView.findViewById(R.id.tvPhone);
+        TextView tvPhone = convertView.findViewById(R.id.tvPhone);
         tvPhone.setText(entry.getTelefono());
 
         // set email
-        TextView tvEmail = (TextView)convertView.findViewById(R.id.tvEmail);
+        TextView tvEmail = convertView.findViewById(R.id.tvEmail);
         tvEmail.setText(entry.getMail());
 
         return convertView;

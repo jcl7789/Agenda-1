@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,8 +13,8 @@
         android:id="@+id/imgAvatar"
         android:layout_width="64dip"
         android:layout_height="64dip"
-        android:scaleType="fitCenter"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter" />
 
 
     <TextView
@@ -36,7 +35,22 @@
         android:textStyle="normal|bold" />
 
 
+    <TextView
+        android:id="@+id/labelApellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apellido" />
 
+    <TextView
+        android:id="@+id/tvApellido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:editable="false"
+        android:text="Apellido"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/labelMail"
