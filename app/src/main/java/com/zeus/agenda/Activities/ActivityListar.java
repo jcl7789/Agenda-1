@@ -2,28 +2,35 @@ package com.zeus.agenda.Activities;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.zeus.agenda.R;
-import com.zeus.agenda.Utils.Contacto;
 import com.zeus.agenda.Utils.AgendaAdapter;
 import com.zeus.agenda.Utils.Contacto;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by Juan on 29/10/2017.
@@ -37,7 +44,7 @@ public class ActivityListar extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar);
-        listView = (ListView) findViewById(R.id.listPhone);
+        listView = findViewById(R.id.listPhone);
         mostrarContactos();
 
 
@@ -67,14 +74,27 @@ public class ActivityListar extends AppCompatActivity {
         ArrayList<Contacto> lista = new ArrayList<>();
         ContentResolver resolver = getContentResolver();
 
-        Cursor contactos =  resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null,null,ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME+" ASC");
+        Cursor contactos = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         while (contactos.moveToNext()){
             Contacto r = new Contacto();
             String id = contactos.getString(contactos.getColumnIndex(ContactsContract.Contacts._ID));
             r.setId(id);
-            r.setBitmap(BitmapFactory.decodeResource(getResources(),R.mipmap.contacto_default));
+            Bitmap bm = obtenerFoto(id);
+            if (bm == null) {
+                bm = BitmapFactory.decodeResource(getResources(), R.mipmap.contacto_default);
+            }
+            r.setBitmap(getRoundedCornerBitmap(bm, 64));
             String nombre = contactos.getString(contactos.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            String apellido = "";
+            Cursor nombre_entero = resolver.query(ContactsContract.Data.CONTENT_URI, null, ContactsContract.Data.DATA1 + " = ?", new String[]{nombre}, null);
+            while (nombre_entero.moveToNext()) {
+                nombre = nombre_entero.getString(nombre_entero.getColumnIndex(ContactsContract.Data.DATA2));
+                apellido = nombre_entero.getString(nombre_entero.getColumnIndex(ContactsContract.Data.DATA3));
+
+            }
             r.setNombre(nombre);
+            if (apellido != null) r.setApellido(apellido);
+            else r.setApellido("");
             Cursor telefonos = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", new String[] { id }, null);
             while (telefonos.moveToNext()){
@@ -113,14 +133,65 @@ public class ActivityListar extends AppCompatActivity {
         Intent t= new Intent(this,ActivityVer.class);
         ArrayList<Contacto> lista = obtenerContactos();
         Contacto c =  lista.get((int)posicion);
-        Log.e("Contacto encontrado", c.getNombre());
         t.putExtra("imagen", c.getBitmap());
         t.putExtra("id", c.getId());
         t.putExtra("nombre", c.getNombre());
+        t.putExtra("apellido", c.getApellido());
         t.putExtra("mail", c.getMail());
         t.putExtra("telefono", c.getTelefono());
         startActivity(t);
         this.finish();
+    }
+
+
+    public Bitmap obtenerFoto(String id) {
+        Cursor cur = null;
+        try {
+            cur = this.getContentResolver().query(
+                    ContactsContract.Data.CONTENT_URI,
+                    null,
+                    ContactsContract.Data.CONTACT_ID + "=" + id + " AND "
+                            + ContactsContract.Data.MIMETYPE + "='"
+                            + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'", null,
+                    null);
+            if (cur != null) {
+                if (!cur.moveToFirst()) {
+                    return null; // no photo
+                }
+            } else {
+                return null; // error in cursor process
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            cur.close();
+            Uri person = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, Long
+                    .parseLong(id));
+            Uri.withAppendedPath(person, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+            InputStream photo_stream = ContactsContract.Contacts.openContactPhotoInputStream(getContentResolver(), person);
+            BufferedInputStream buf = new BufferedInputStream(photo_stream);
+            return BitmapFactory.decodeStream(buf);
+
+        }
+
+    }
+
+    private Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
 }
